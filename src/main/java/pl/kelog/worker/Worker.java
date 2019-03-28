@@ -1,19 +1,16 @@
 package pl.kelog.worker;
 
-import org.apache.http.HttpResponse;
-import org.apache.http.client.HttpClient;
-import org.apache.http.client.methods.HttpGet;
-import org.apache.http.impl.client.HttpClientBuilder;
 import pl.kelog.dto.SearchResult;
 import pl.kelog.publisher.ResultsPublisher;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
+import java.util.Set;
 
 import static java.util.Arrays.asList;
+import static pl.kelog.worker.FileFetcher.fetchWordsFile;
 
 public class Worker {
     private final String wordsFileUrl;
@@ -37,6 +34,7 @@ public class Worker {
     }
     
     private static List<SearchResult> search(List<String> words, int segmentsCount, int segmentIndex) {
+        Set<String> set = new HashSet<>(words);
         int total = words.size();
         int slice = total / segmentsCount;
         int from = segmentIndex * slice;
@@ -47,14 +45,14 @@ public class Worker {
         List<SearchResult> results = new ArrayList<>();
         
         for (int i = from; i < to; i++) {
-            if ((to-from) % 1000 == 0) {
-                double processed = i - from;
-                double all = to-from;
-                System.out.println("Progess: " + 100*processed/all + "%");
+            if ((to - from) % 10000 == 0) {
+                logProgress(from, to, i);
             }
-            for (int j = 0; j < words.size(); j++) {
-                if (words.contains(words.get(i) + words.get(j))) {
-                    results.add(new SearchResult(words.get(i), words.get(j)));
+            for (String word : words) {
+                if (set.contains(words.get(i) + word)) {
+                    SearchResult result = new SearchResult(words.get(i), word);
+                    System.out.println("Found: " + result);
+                    results.add(result);
                 }
             }
         }
@@ -62,23 +60,9 @@ public class Worker {
         return results;
     }
     
-    
-    private static String fetchWordsFile(String url) throws IOException {
-        System.out.println("Fetching words file from URL: " + url + " ...");
-        HttpClient client = HttpClientBuilder.create().build();
-        HttpGet request = new HttpGet(url);
-        
-        HttpResponse response = client.execute(request);
-        
-        BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
-        
-        StringBuilder content = new StringBuilder();
-        String line;
-        while ((line = rd.readLine()) != null) {
-            content.append(line).append("\n");
-        }
-        System.out.println("File fetched successfully, size: " + content.length() + " bytes.");
-        return content.toString();
+    private static void logProgress(int from, int to, int i) {
+        double processed = i - from;
+        double all = to - from;
+        System.out.println("Progess: " + 100 * processed / all + "%");
     }
-    
 }
