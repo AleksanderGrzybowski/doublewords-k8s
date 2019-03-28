@@ -4,8 +4,8 @@ import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
-import pl.kelog.publisher.ResultsPublisher;
 import pl.kelog.dto.SearchResult;
+import pl.kelog.publisher.ResultsPublisher;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -42,10 +42,16 @@ public class Worker {
         int from = segmentIndex * slice;
         int to = (segmentIndex + 1) * slice;
         
+        System.out.println("From: " + from + ", to: " + to + ", total:" + (to - from));
         
         List<SearchResult> results = new ArrayList<>();
+        
         for (int i = from; i < to; i++) {
-            System.out.println(words.get(i));
+            if ((to-from) % 1000 == 0) {
+                double processed = i - from;
+                double all = to-from;
+                System.out.println("Progess: " + 100*processed/all + "%");
+            }
             for (int j = 0; j < words.size(); j++) {
                 if (words.contains(words.get(i) + words.get(j))) {
                     results.add(new SearchResult(words.get(i), words.get(j)));
@@ -58,6 +64,7 @@ public class Worker {
     
     
     private static String fetchWordsFile(String url) throws IOException {
+        System.out.println("Fetching words file from URL: " + url + " ...");
         HttpClient client = HttpClientBuilder.create().build();
         HttpGet request = new HttpGet(url);
         
@@ -65,12 +72,13 @@ public class Worker {
         
         BufferedReader rd = new BufferedReader(new InputStreamReader(response.getEntity().getContent()));
         
-        String content = "";
+        StringBuilder content = new StringBuilder();
         String line;
         while ((line = rd.readLine()) != null) {
-            content += line + "\n";
+            content.append(line).append("\n");
         }
-        return content;
+        System.out.println("File fetched successfully, size: " + content.length() + " bytes.");
+        return content.toString();
     }
     
 }
