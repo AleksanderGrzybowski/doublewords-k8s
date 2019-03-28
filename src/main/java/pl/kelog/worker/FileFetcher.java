@@ -8,10 +8,14 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
+
+import static java.util.Arrays.asList;
 
 class FileFetcher {
     
-    static String fetchWordsFile(String url) throws IOException {
+    static List<String> fetchWordsFile(String url) throws IOException {
         System.out.println("Fetching words file from URL: " + url + " ...");
         HttpClient client = HttpClientBuilder.create().build();
         HttpGet request = new HttpGet(url);
@@ -25,8 +29,10 @@ class FileFetcher {
         while ((line = rd.readLine()) != null) {
             content.append(line).append("\n");
         }
+        
         System.out.println("File fetched successfully, size: " + content.length() + " bytes.");
-        return content.toString();
+        
+        return new ArrayList<>(asList(content.toString().split("\n")));
     }
     
 }
