@@ -6,5 +6,5 @@ import java.util.List;
 
 public interface ResultsPublisher {
     
-    void publish(List<SearchResult> results);
+    void publish(List<SearchResult> results) throws Exception;
 }

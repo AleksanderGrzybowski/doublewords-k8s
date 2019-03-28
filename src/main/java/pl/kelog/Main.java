@@ -6,8 +6,6 @@ import pl.kelog.publisher.HttpResultsPublisher;
 import pl.kelog.publisher.ResultsPublisher;
 import pl.kelog.worker.Worker;
 
-import java.io.IOException;
-
 public class Main {
     public static void main(String[] args) throws Exception {
         System.out.println("Starting doublewords application...");
@@ -21,7 +19,7 @@ public class Main {
         }
     }
     
-    private static void bootstrapWorker() throws IOException {
+    private static void bootstrapWorker() throws Exception {
 //        String wordsFileUrl = "http://storage.kelog.pl/100k.txt";
         System.out.println("Starting worker...");
         String wordsFileUrl = System.getenv("WORDS_URL");

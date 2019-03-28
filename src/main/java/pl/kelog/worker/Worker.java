@@ -3,7 +3,6 @@ package pl.kelog.worker;
 import pl.kelog.dto.SearchResult;
 import pl.kelog.publisher.ResultsPublisher;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
@@ -25,7 +24,7 @@ public class Worker {
         this.publisher = publisher;
     }
     
-    public void runToCompletion() throws IOException {
+    public void runToCompletion() throws Exception {
         List<String> words = fetchWordsFile(wordsFileUrl);
         System.out.println("Total word count in file: " + words.size());
         
