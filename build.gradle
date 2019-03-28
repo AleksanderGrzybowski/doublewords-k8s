@@ -1,0 +1,30 @@
+plugins {
+    id 'groovy'
+    id 'idea'
+    id 'com.github.johnrengelman.shadow' version '1.2.3'
+}
+
+description = "doublewords"
+
+sourceCompatibility = 1.8
+
+def mainClass = 'pl.kelog.Main'
+
+repositories {
+    mavenCentral()
+}
+
+jar {
+    manifest {
+        attributes('Main-Class': mainClass)
+    }
+}
+
+task run(type: JavaExec) {
+    main = mainClass
+    classpath = sourceSets.main.runtimeClasspath
+}
+
+dependencies {
+    compile 'com.sparkjava:spark-core:2.7.1'
+}
