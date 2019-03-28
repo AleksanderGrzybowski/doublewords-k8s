@@ -15,12 +15,21 @@ import java.util.List;
 public class Main {
     public static void main(String[] args) throws IOException {
         String content = fetchWordsFile("http://storage.kelog.pl/part.txt");
-        System.out.println(content);
         
         List<String> words = new ArrayList<>(Arrays.asList(content.split("\n")));
-        System.out.println(words);
         
-        for (int i = 0; i < words.size(); i++) {
+        search(words, 11, 10);
+    }
+    
+    private static void search(List<String> words, int segmentsCount, int segmentIndex) {
+        int total = words.size();
+        int slice = total / segmentsCount;
+        int from = segmentIndex * slice;
+        int to = (segmentIndex + 1) * slice;
+        
+        
+        for (int i = from; i < to; i++) {
+            System.out.println(words.get(i));
             for (int j = 0; j < words.size(); j++) {
                 if (words.contains(words.get(i) + words.get(j))) {
                     publish(words.get(i), words.get(j));
