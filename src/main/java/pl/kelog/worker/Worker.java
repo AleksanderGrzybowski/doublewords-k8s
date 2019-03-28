@@ -7,6 +7,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 import static pl.kelog.worker.FileFetcher.fetchWordsFile;
 
@@ -25,7 +26,11 @@ public class Worker {
     }
     
     public void runToCompletion() throws Exception {
-        List<String> words = fetchWordsFile(wordsFileUrl);
+        List<String> words = fetchWordsFile(wordsFileUrl)
+                .stream()
+                .filter(w -> w.length() >= 5)
+                .collect(Collectors.toList());
+        
         System.out.println("Total word count in file: " + words.size());
         
         List<SearchResult> results = search(words, segmentsCount, selectedSegment);
