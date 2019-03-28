@@ -1,0 +1,28 @@
+apiVersion: batch/v1
+kind: Job
+metadata:
+  name: 'doublewords-playground-${SELECTED_SEGMENT}'
+spec:
+  template:
+    spec:
+      restartPolicy: Never
+      containers:
+      - name: doublewords-playground
+        image: kelog/doublewords:v01
+        resources:
+          limits:
+            memory: "150Mi"
+            cpu: 500m
+        env:
+        - name: MODE
+          value: WORKER
+        - name: WORDS_URL
+          value: http://92.222.76.126:9876/100k.txt
+        - name: SINK_URL
+          value: http://92.222.76.126:1234/publish
+        - name: SEGMENTS_COUNT
+          value: '${SEGMENTS_COUNT}'
+        - name: SELECTED_SEGMENT
+          value: '${SELECTED_SEGMENT}'
+        - name: RESULTS_PUBLISHER
+          value: HTTP
