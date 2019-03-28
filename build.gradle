@@ -27,4 +27,5 @@ task run(type: JavaExec) {
 
 dependencies {
     compile 'com.sparkjava:spark-core:2.7.1'
+    compile group: 'org.apache.httpcomponents', name: 'httpclient', version: '4.5.7'
 }
