@@ -23,6 +23,7 @@ public class Main {
     
     private static void bootstrapWorker() throws IOException {
 //        String wordsFileUrl = "http://storage.kelog.pl/100k.txt";
+        System.out.println("Starting worker...");
         String wordsFileUrl = System.getenv("WORDS_URL");
         int segmentsCount = Integer.parseInt(System.getenv("SEGMENTS_COUNT"));
         int selectedSegment = Integer.parseInt(System.getenv("SELECTED_SEGMENT"));
@@ -45,6 +46,7 @@ public class Main {
         if (port == null) {
             port = "8080";
         }
+        System.out.println("Starting server on port " + port + "...");
         
         new CollectorServer(Integer.parseInt(port)).start();
     }
