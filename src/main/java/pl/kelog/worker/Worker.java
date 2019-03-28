@@ -1,9 +1,11 @@
-package pl.kelog;
+package pl.kelog.worker;
 
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
 import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.HttpClientBuilder;
+import pl.kelog.publisher.ResultsPublisher;
+import pl.kelog.dto.SearchResult;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -13,20 +15,20 @@ import java.util.List;
 
 import static java.util.Arrays.asList;
 
-class Worker {
+public class Worker {
     private final String wordsFileUrl;
     private final int segmentsCount;
     private final int selectedSegment;
     private final ResultsPublisher publisher;
     
-    Worker(String wordsFileUrl, int segmentsCount, int selectedSegment, ResultsPublisher publisher) {
+    public Worker(String wordsFileUrl, int segmentsCount, int selectedSegment, ResultsPublisher publisher) {
         this.wordsFileUrl = wordsFileUrl;
         this.segmentsCount = segmentsCount;
         this.selectedSegment = selectedSegment;
         this.publisher = publisher;
     }
     
-    void runToCompletion() throws IOException {
+    public void runToCompletion() throws IOException {
         String content = fetchWordsFile(wordsFileUrl);
         
         List<String> words = new ArrayList<>(asList(content.split("\n")));
