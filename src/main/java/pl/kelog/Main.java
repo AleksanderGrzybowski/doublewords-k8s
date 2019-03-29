@@ -18,7 +18,7 @@ public class Main {
     private static final String ENV_MODE_SERVER = "SERVER";
     
     private static final String ENV_WORDS_URL = "ENV_WORDS_URL";
-    private static final String DEFAULT_WORDS_URL = "http://storage.kelog.pl/100k.txt";
+    private static final String DEFAULT_WORDS_URL = "https://sjp.pl/slownik/growy/sjp-20190225.zip";
     private static final String ENV_SEGMENTS_COUNT = "SEGMENTS_COUNT";
     private static final String ENV_SELECTED_SEGMENT = "SELECTED_SEGMENT";
     

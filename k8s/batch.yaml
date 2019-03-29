@@ -11,9 +11,11 @@ spec:
         image: kelog/doublewords:v01
         resources:
           limits:
-            memory: "150Mi"
+            memory: "600Mi"
             cpu: 500m
         env:
+        - name: JAVA_OPTS
+          value: '-Xmx500m'
         - name: MODE
           value: WORKER
         - name: WORDS_URL

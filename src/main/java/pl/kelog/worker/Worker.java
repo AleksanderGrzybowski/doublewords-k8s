@@ -9,7 +9,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static pl.kelog.worker.FileFetcher.fetchWordsFile;
+import static pl.kelog.worker.WordsFileFetcher.fetchPolishWordsFile;
 
 public class Worker {
     
@@ -26,7 +26,7 @@ public class Worker {
     }
     
     public void runToCompletion() throws Exception {
-        List<String> words = fetchWordsFile(wordsFileUrl)
+        List<String> words = fetchPolishWordsFile(wordsFileUrl)
                 .stream()
                 .filter(w -> w.length() >= 5)
                 .collect(Collectors.toList());
