@@ -2,12 +2,16 @@ package pl.kelog.publisher;
 
 import pl.kelog.dto.SearchResult;
 
-import java.util.List;
-import java.util.stream.Collectors;
+import java.text.MessageFormat;
 
 public class ConsoleResultsPublisher implements ResultsPublisher {
     
-    public void publish(List<SearchResult> results) {
-        System.out.println("Mock publishing " + results.stream().map(r -> r.first + "-" + r.second).collect(Collectors.toList()));
+    @Override
+    public void publishAsync(SearchResult result) {
+        System.out.println(MessageFormat.format("[console] Published {0}.", result));
+    }
+    
+    @Override
+    public void flush() {
     }
 }

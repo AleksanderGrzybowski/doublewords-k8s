@@ -8,37 +8,59 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import pl.kelog.dto.SearchResult;
 
-import java.util.List;
+import java.util.concurrent.Callable;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
+import static java.text.MessageFormat.format;
 import static java.util.Collections.singletonList;
 
 public class HttpResultsPublisher implements ResultsPublisher {
     
+    private static final String POST_WORD_PARAM_NAME = "word";
+    
     private final String sinkUrl;
+    private final ExecutorService executorService = Executors.newFixedThreadPool(5);
     
     public HttpResultsPublisher(String sinkUrl) {
         this.sinkUrl = sinkUrl;
     }
     
-    public void publish(List<SearchResult> results) throws Exception {
-        for (SearchResult result : results) {
-            publish(result);
-        }
+    @Override
+    public void publishAsync(SearchResult searchResult) {
+        executorService.submit((Callable<Void>) () -> {
+            postToServer(searchResult);
+            return null;
+        });
     }
     
-    private void publish(SearchResult searchResult) throws Exception {
-        System.out.println("URL " + sinkUrl + " publishing result " + searchResult + "...");
+    @Override
+    public void flush() {
+        try {
+            executorService.awaitTermination(10, TimeUnit.SECONDS);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
+        executorService.shutdownNow();
+    }
+    
+    private void postToServer(SearchResult searchResult) throws Exception {
+        System.out.println(format("Publishing {0} using {1}...", searchResult, sinkUrl));
+        
         HttpClient client = HttpClientBuilder.create().build();
         HttpPost request = new HttpPost(sinkUrl);
-        request.setEntity(new UrlEncodedFormEntity(singletonList(new BasicNameValuePair("word", searchResult.toString()))));
-    
+        request.setEntity(new UrlEncodedFormEntity(singletonList(
+                new BasicNameValuePair(POST_WORD_PARAM_NAME, searchResult.toString())
+        )));
+        
         HttpResponse response = client.execute(request);
         int statusCode = response.getStatusLine().getStatusCode();
-    
+        
         if (statusCode == 200) {
-            System.out.println("Successfully published " + searchResult + ".");
+            System.out.println("OK");
         } else {
-            System.out.println("Failed to publish " + searchResult + " - HTTP " + statusCode);
+            System.err.println(format("Failed to publish {0}, HTTP error {1}.", searchResult, statusCode));
         }
     }
 }

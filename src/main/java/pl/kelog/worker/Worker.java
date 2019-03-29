@@ -36,10 +36,10 @@ public class Worker {
         List<SearchResult> results = search(words, segmentsCount, selectedSegment);
         System.out.println("Found results: " + results.size());
         
-        publisher.publish(results);
+        publisher.flush();
     }
     
-    private static List<SearchResult> search(List<String> words, int segmentsCount, int segmentIndex) {
+    private List<SearchResult> search(List<String> words, int segmentsCount, int segmentIndex) {
         Set<String> memo = new HashSet<>(words);
         
         int total = words.size();
@@ -61,7 +61,7 @@ public class Worker {
                 if (memo.contains(words.get(i) + words.get(j))) {
                     SearchResult result = new SearchResult(words.get(i), words.get(j));
                     System.out.println("Found: " + result);
-                    results.add(result);
+                    publisher.publishAsync(result);
                 }
             }
         }
