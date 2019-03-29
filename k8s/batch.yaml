@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: 'doublewords-playground-${SELECTED_SEGMENT}'
+  name: 'doublewords-batch-${SELECTED_SEGMENT}'
 spec:
   template:
     spec:
@@ -18,13 +18,11 @@ spec:
           value: '-Xmx500m'
         - name: MODE
           value: WORKER
-        - name: WORDS_URL
-          value: http://92.222.76.126:9876/100k.txt
+        - name: RESULTS_PUBLISHER
+          value: HTTP
         - name: SINK_URL
           value: http://92.222.76.126:1234/store
         - name: SEGMENTS_COUNT
           value: '${SEGMENTS_COUNT}'
         - name: SELECTED_SEGMENT
           value: '${SELECTED_SEGMENT}'
-        - name: RESULTS_PUBLISHER
-          value: HTTP
