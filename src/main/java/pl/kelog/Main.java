@@ -46,7 +46,7 @@ public class Main {
         }
         System.out.println("Starting server on port " + port + "...");
         
-        new CollectorServer(Integer.parseInt(port)).start();
+        new CollectorServer(Integer.parseInt(port)).startInDaemonThread();
     }
     
 }

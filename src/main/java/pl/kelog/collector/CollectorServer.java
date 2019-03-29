@@ -1,32 +1,35 @@
 package pl.kelog.collector;
 
-import spark.Spark;
+import spark.Request;
 
-import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import static spark.Spark.*;
 
 public class CollectorServer {
+    
+    private static final String NULL_MESSAGE = "Request word can't be null";
+    
     private final int port;
-    private final Set<String> matches = Collections.synchronizedSet(new HashSet<>());
+    private final FoundWordsRepository foundWordsRepository = new FoundWordsRepository();
     
     public CollectorServer(int port) {
         this.port = port;
     }
     
-    public void start() {
-        Spark.port(port);
+    public void startInDaemonThread() {
+        port(port);
         
-        Spark.post("/publish", (request, response) -> {
-            String word = request.queryParams("word");
-            if (word == null) {
-                throw new AssertionError("Published word can't be null");
-            }
-            System.out.println("Got word: " + word);
-            matches.add(word);
-            return 200;
-        });
+        post("/store", (request, response) -> handleStore(request));
+        get("/", (request, response) -> foundWordsRepository.list());
+    }
+    
+    private int handleStore(Request request) {
+        String word = request.queryParams("word");
+        if (word == null) {
+            System.err.println(NULL_MESSAGE);
+            throw new IllegalArgumentException(NULL_MESSAGE);
+        }
         
-        Spark.get("/", ((request, response) -> matches));
+        foundWordsRepository.add(word);
+        return 200;
     }
 }

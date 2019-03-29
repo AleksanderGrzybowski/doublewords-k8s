@@ -19,7 +19,7 @@ spec:
         - name: WORDS_URL
           value: http://92.222.76.126:9876/100k.txt
         - name: SINK_URL
-          value: http://92.222.76.126:1234/publish
+          value: http://92.222.76.126:1234/store
         - name: SEGMENTS_COUNT
           value: '${SEGMENTS_COUNT}'
         - name: SELECTED_SEGMENT
