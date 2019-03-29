@@ -22,7 +22,7 @@ import static java.util.Objects.requireNonNull;
 
 class WordsFileFetcher {
     
-    static List<String> fetchPolishWordsFile(String zipUrl) throws Exception {
+    static List<String> fetchPolishWords(String zipUrl) throws Exception {
         System.out.println(format("Fetching compressed words file from URL: {0}...", zipUrl));
         HttpClient client = HttpClientBuilder.create().build();
         HttpGet request = new HttpGet(zipUrl);
