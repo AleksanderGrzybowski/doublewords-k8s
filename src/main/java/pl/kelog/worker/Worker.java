@@ -49,25 +49,18 @@ public class Worker {
         System.out.println(format("Processing list of words, from: {0}, to: {1}, total: {2}...", from, to, to - from));
         
         for (int i = from; i < to; i++) {
-            if ((i - from) % 100 == 0) {
-                logProgress(from, to, i);
-            }
+            String left = words.get(i);
+            System.out.println(format("[{0}/{1}] {2}", Integer.toString(i - from+1), Integer.toString(to - from+1), left));
             
             //noinspection ForLoopReplaceableByForEach
             for (int j = 0; j < words.size(); j++) {
-                if (memo.contains(words.get(i) + words.get(j))) {
-                    SearchResult result = new SearchResult(words.get(i), words.get(j));
+                String right = words.get(j);
+                if (memo.contains(left + right)) {
+                    SearchResult result = new SearchResult(left, right);
                     System.out.println("Found: " + result);
                     publisher.publishAsync(result);
                 }
             }
         }
-    }
-    
-    private static void logProgress(int from, int to, int i) {
-        double processed = i - from;
-        double all = to - from;
-        double percentage = 100 * processed / all;
-        System.out.println("Progess: " + String.format("%.2f", percentage) + "%");
     }
 }
