@@ -8,14 +8,17 @@ spec:
       restartPolicy: Never
       containers:
       - name: doublewords-playground
-        image: kelog/doublewords:v03
+        image: kelog/doublewords:v04
         resources:
           limits:
-            memory: "500Mi"
-            cpu: 1000m
+            memory: "150Mi"
+            cpu: 100m
+          requests:
+            memory: "150Mi"
+            cpu: 100m
         env:
         - name: JAVA_OPTS
-          value: '-Xmx400m -Xms400m'
+          value: '-Xmx100m -Xms100m'
         - name: MODE
           value: WORKER
         - name: RESULTS_PUBLISHER
