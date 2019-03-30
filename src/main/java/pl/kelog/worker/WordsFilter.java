@@ -104,7 +104,15 @@ class WordsFilter {
             "zez",
             "znad",
             "znade",
-            "zza"
+            "zza",
+            ///
+            "anty",
+            "auto",
+            "arcy",
+            "super",
+            "mili",
+            "mikro",
+            "kilo"
     ));
     
     static boolean isSensibleWord(String word) {
