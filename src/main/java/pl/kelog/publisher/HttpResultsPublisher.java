@@ -8,6 +8,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import pl.kelog.dto.SearchResult;
 
+import java.nio.charset.Charset;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -50,9 +51,12 @@ public class HttpResultsPublisher implements ResultsPublisher {
         
         HttpClient client = HttpClientBuilder.create().build();
         HttpPost request = new HttpPost(sinkUrl);
-        request.setEntity(new UrlEncodedFormEntity(singletonList(
-                new BasicNameValuePair(POST_WORD_PARAM_NAME, searchResult.toString())
-        )));
+        request.setEntity(
+                new UrlEncodedFormEntity(
+                        singletonList(new BasicNameValuePair(POST_WORD_PARAM_NAME, searchResult.toString())),
+                        Charset.defaultCharset()
+                )
+        );
         
         HttpResponse response = client.execute(request);
         int statusCode = response.getStatusLine().getStatusCode();
