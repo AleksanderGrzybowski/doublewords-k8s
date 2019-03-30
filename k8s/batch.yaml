@@ -11,11 +11,11 @@ spec:
         image: kelog/doublewords:v03
         resources:
           limits:
-            memory: "600Mi"
-            cpu: 500m
+            memory: "500Mi"
+            cpu: 1000m
         env:
         - name: JAVA_OPTS
-          value: '-Xmx500m'
+          value: '-Xmx400m -Xms400m'
         - name: MODE
           value: WORKER
         - name: RESULTS_PUBLISHER

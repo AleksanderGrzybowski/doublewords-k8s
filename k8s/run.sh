@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 
-SEGMENTS_COUNT=10
+SEGMENTS_COUNT=5000
 
 LOOP_END="$(($SEGMENTS_COUNT-1))"
 
