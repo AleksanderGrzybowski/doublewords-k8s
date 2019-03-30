@@ -112,7 +112,15 @@ class WordsFilter {
             "super",
             "mili",
             "mikro",
-            "kilo"
+            "makro",
+            "kilo",
+            "techno",
+            "pseudo",
+            "mono",
+            "mini",
+            "jedno",
+            "hiper",
+            "homo"
     ));
     
     static boolean isSensibleWord(String word) {
