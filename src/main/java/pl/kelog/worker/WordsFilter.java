@@ -120,7 +120,11 @@ class WordsFilter {
             "mini",
             "jedno",
             "hiper",
-            "homo"
+            "homo",
+            "prawo",
+            "lewo",
+            "prosto",
+            "pseudo"
     ));
     
     static boolean isSensibleWord(String word) {
