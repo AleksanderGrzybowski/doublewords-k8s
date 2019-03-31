@@ -6,7 +6,7 @@ import java.util.Set;
 
 class WordsFilter {
     
-    private static Set<String> BANNED_PREFIXES = new HashSet<>(Arrays.asList(
+    public static Set<String> BANNED_PREFIXES = new HashSet<>(Arrays.asList(
             "ben",
             "bez",
             "beze",
@@ -124,7 +124,17 @@ class WordsFilter {
             "prawo",
             "lewo",
             "prosto",
-            "pseudo"
+            "pseudo",
+            "euro",
+            "święto",
+            "ciemn",
+            "radio",
+            "seks",
+            "foto",
+            "nitro",
+            "nisko",
+            "wysoko",
+            "trzy"
     ));
     
     static boolean isSensibleWord(String word) {
