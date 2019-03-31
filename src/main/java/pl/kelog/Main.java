@@ -52,7 +52,7 @@ public class Main {
         int segmentsCount = parseInt(ofNullable(getenv(ENV_SEGMENTS_COUNT)).orElse("1"));
         int selectedSegment = parseInt(ofNullable(getenv(ENV_SELECTED_SEGMENT)).orElse("0"));
         System.out.println(format(
-                "Worker parameters: words URL: {0}, segments count: {1}, selected segment: {2}",
+                "Worker parameters: words URL: {0}, segments count: {1}, selected segment: {2}.",
                 wordsFileUrl, segmentsCount, selectedSegment
         ));
         
@@ -61,6 +61,7 @@ public class Main {
     
     private static ResultsPublisher resultsPublisher() {
         String publisher = ofNullable(getenv(ENV_RESULTS_PUBLISHER)).orElse(ENV_RESULTS_PUBLISHER_CONSOLE);
+        
         if (ENV_RESULTS_PUBLISHER_CONSOLE.equals(publisher)) {
             return new ConsoleResultsPublisher();
         } else if (ENV_RESULTS_PUBLISHER_HTTP.equals(publisher)) {
@@ -72,7 +73,7 @@ public class Main {
     
     private static void bootstrapServer() {
         String port = ofNullable(getenv(ENV_PORT)).orElse(DEFAULT_PORT);
-        System.out.println(format("Server parameters: port: {0}", port));
+        System.out.println(format("Server port: {0}.", port));
         
         new CollectorServer(parseInt(port)).startInDaemonThread();
     }

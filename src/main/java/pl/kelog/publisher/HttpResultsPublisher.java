@@ -8,7 +8,7 @@ import org.apache.http.impl.client.HttpClientBuilder;
 import org.apache.http.message.BasicNameValuePair;
 import pl.kelog.dto.SearchResult;
 
-import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
@@ -16,13 +16,16 @@ import java.util.concurrent.TimeUnit;
 
 import static java.text.MessageFormat.format;
 import static java.util.Collections.singletonList;
+import static pl.kelog.common.Constants.HTTP_STATUS_OK;
 
 public class HttpResultsPublisher implements ResultsPublisher {
     
     private static final String POST_WORD_PARAM_NAME = "word";
+    private static final int THREAD_POOL_SIZE = 5;
+    private static final int POOL_TERMINATION_TIMEOUT = 10;
     
     private final String sinkUrl;
-    private final ExecutorService executorService = Executors.newFixedThreadPool(5);
+    private final ExecutorService executorService = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
     
     public HttpResultsPublisher(String sinkUrl) {
         this.sinkUrl = sinkUrl;
@@ -39,7 +42,7 @@ public class HttpResultsPublisher implements ResultsPublisher {
     @Override
     public void flush() {
         try {
-            executorService.awaitTermination(10, TimeUnit.SECONDS);
+            executorService.awaitTermination(POOL_TERMINATION_TIMEOUT, TimeUnit.SECONDS);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -54,14 +57,14 @@ public class HttpResultsPublisher implements ResultsPublisher {
         request.setEntity(
                 new UrlEncodedFormEntity(
                         singletonList(new BasicNameValuePair(POST_WORD_PARAM_NAME, searchResult.toString())),
-                        Charset.defaultCharset()
+                        StandardCharsets.UTF_8
                 )
         );
         
         HttpResponse response = client.execute(request);
         int statusCode = response.getStatusLine().getStatusCode();
         
-        if (statusCode == 200) {
+        if (statusCode == HTTP_STATUS_OK) {
             System.out.println("OK");
         } else {
             System.err.println(format("Failed to publish {0}, HTTP error {1}.", searchResult, statusCode));

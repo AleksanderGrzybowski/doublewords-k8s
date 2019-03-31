@@ -1,8 +1,8 @@
 package pl.kelog.dto;
 
 public class SearchResult {
-    public final String first;
-    public final String second;
+    private final String first;
+    private final String second;
     
     public SearchResult(String first, String second) {
         this.first = first;

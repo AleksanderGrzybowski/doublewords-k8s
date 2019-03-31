@@ -1,5 +1,6 @@
 package pl.kelog.collector;
 
+import pl.kelog.common.Constants;
 import spark.Request;
 
 import static spark.Spark.*;
@@ -30,6 +31,6 @@ public class CollectorServer {
         }
         
         foundWordsRepository.add(word);
-        return 200;
+        return Constants.HTTP_STATUS_OK;
     }
 }
