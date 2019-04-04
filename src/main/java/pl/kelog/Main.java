@@ -27,9 +27,9 @@ public class Main {
     private static final String ENV_RESULTS_PUBLISHER_HTTP = "HTTP";
     
     private static final String ENV_PORT = "PORT";
-    private static final String DEFAULT_PORT = "8080";
+    private static final String DEFAULT_PORT = "8888";
     private static final String ENV_SINK_URL = "SINK_URL";
-    private static final String DEFAULT_SINK_URL = "http://localhost:8080";
+    private static final String DEFAULT_SINK_URL = "http://localhost:8888";
     
     public static void main(String[] args) throws Exception {
         System.out.println("Starting doublewords application...");

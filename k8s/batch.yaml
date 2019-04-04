@@ -24,7 +24,7 @@ spec:
         - name: RESULTS_PUBLISHER
           value: HTTP
         - name: SINK_URL
-          value: http://92.222.76.126:1234/store
+          value: http://92.222.76.126:8888/store
         - name: SEGMENTS_COUNT
           value: '${SEGMENTS_COUNT}'
         - name: SELECTED_SEGMENT
