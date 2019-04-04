@@ -1,7 +1,7 @@
 apiVersion: batch/v1
 kind: Job
 metadata:
-  name: 'doublewords-batch-${SELECTED_SEGMENT}'
+  name: '${JOB_PREFIX}-batch-${SELECTED_SEGMENT}'
 spec:
   template:
     spec:

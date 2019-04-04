@@ -5,7 +5,7 @@ WORKDIR /doublewords
 
 RUN ./gradlew clean shadowJar
 
-FROM openjdk:8-jdk
+FROM openjdk:8-jre-alpine
 
 COPY --from=0 /doublewords/build/libs/doublewords-all.jar /
 COPY ./docker-entrypoint.sh /
