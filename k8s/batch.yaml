@@ -8,7 +8,8 @@ spec:
       restartPolicy: Never
       containers:
       - name: doublewords-playground
-        image: kelog/doublewords:v06
+        image: kelog/doublewords:latest
+        imagePullPolicy: Always
         resources:
           limits:
             memory: "150Mi"
