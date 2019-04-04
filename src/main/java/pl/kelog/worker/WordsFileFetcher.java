@@ -21,6 +21,7 @@ import java.util.List;
 import static java.text.MessageFormat.format;
 import static java.util.Arrays.asList;
 import static java.util.Objects.requireNonNull;
+import static pl.kelog.common.Constants.HTTP_STATUS_OK;
 
 class WordsFileFetcher {
     
@@ -45,7 +46,12 @@ class WordsFileFetcher {
         HttpGet request = new HttpGet(zipUrl);
         
         HttpResponse response = client.execute(request);
-        System.out.println(format("Response status code {0}.", response.getStatusLine().getStatusCode()));
+        
+        int statusCode = response.getStatusLine().getStatusCode();
+        System.out.println(format("Response status code {0}.", statusCode));
+        if (statusCode != HTTP_STATUS_OK) {
+            throw new RuntimeException("Failed file fetch!");
+        }
         
         byte[] zipContent = IOUtils.toByteArray(response.getEntity().getContent());
         System.out.println(format("Stored ZIP file content in memory, size: {0} bytes.", zipContent.length));
@@ -54,18 +60,22 @@ class WordsFileFetcher {
     
     private static File storeContentInFile(byte[] zipContent) throws IOException {
         File zipFile = File.createTempFile("words-zip", ".zip");
+        
         System.out.println(format("Storing ZIP file in {0}...", zipFile.getAbsolutePath()));
         FileUtils.writeByteArrayToFile(zipFile, zipContent);
+        
         return zipFile;
     }
     
     
     private static String extractWordsZipFile(File zipFile) throws IOException, ZipException {
         String extractedFolderPath = Files.createTempDirectory("words-zip-content").toAbsolutePath().toString();
+        
         System.out.println(format("Extracting ZIP file in {0}...", extractedFolderPath));
         ZipFile zip = new ZipFile(zipFile);
         zip.extractAll(extractedFolderPath);
         System.out.println("Extraction completed.");
+        
         return extractedFolderPath;
     }
     

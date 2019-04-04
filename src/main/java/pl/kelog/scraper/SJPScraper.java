@@ -41,13 +41,11 @@ public class SJPScraper {
     
     /**
      * Play with concurrency level, but be careful of system (kernel)
-     * level TCP connection throttling.
+     * level TCP connection limits.
      */
     private static final int THREAD_COUNT = 100;
     
-    private static final Set<String> BANNED_CHARACTERS = new HashSet<>(asList(
-            " ", "-", ".", "'"
-    ));
+    private static final Set<String> BANNED_CHARACTERS = new HashSet<>(asList(" ", "-", ".", "'"));
     
     private static final int MIN_WORD_LENGTH = 4;
     
@@ -57,7 +55,7 @@ public class SJPScraper {
         ).get();
         
         System.out.println(format(
-                "Scraped {0} words, saving file {1}...",
+                "Scraped {0} words, saving into file {1}...",
                 words.size(),
                 WORDS_OUTPUT_FILENAME
         ));

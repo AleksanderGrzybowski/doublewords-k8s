@@ -50,14 +50,14 @@ public class Worker {
         
         for (int i = from; i < to; i++) {
             String left = words.get(i);
-            System.out.println(format("[{0}/{1}] {2}", Integer.toString(i - from+1), Integer.toString(to - from+1), left));
+            System.out.println(format("[{0}/{1}] {2}", Integer.toString(i - from + 1), Integer.toString(to - from + 1), left));
             
             //noinspection ForLoopReplaceableByForEach
             for (int j = 0; j < words.size(); j++) {
                 String right = words.get(j);
                 if (memo.contains(left + right)) {
                     SearchResult result = new SearchResult(left, right);
-                    System.out.println("Found: " + result);
+                    System.out.println(format("Found: {0}", result));
                     publisher.publishAsync(result);
                 }
             }

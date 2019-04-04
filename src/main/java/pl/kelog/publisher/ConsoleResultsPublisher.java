@@ -4,6 +4,10 @@ import pl.kelog.dto.SearchResult;
 
 import java.text.MessageFormat;
 
+/**
+ * For local testing, we don't need HTTP server for collecting results,
+ * simple console output will do.
+ */
 public class ConsoleResultsPublisher implements ResultsPublisher {
     
     @Override

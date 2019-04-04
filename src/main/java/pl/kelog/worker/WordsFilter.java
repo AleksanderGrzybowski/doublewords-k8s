@@ -1,12 +1,18 @@
 package pl.kelog.worker;
 
-import java.util.Arrays;
 import java.util.HashSet;
 import java.util.Set;
 
+import static java.util.Arrays.asList;
+
+/**
+ * Some double words are just boring and "too obvious",
+ * we filter them out here to save some time.
+ */
 class WordsFilter {
     
-    public static Set<String> BANNED_PREFIXES = new HashSet<>(Arrays.asList(
+    private static final int MIN_WORD_LENGTH = 4;
+    private static Set<String> BANNED_PREFIXES = new HashSet<>(asList(
             "ben",
             "bez",
             "beze",
@@ -105,7 +111,6 @@ class WordsFilter {
             "znad",
             "znade",
             "zza",
-            ///
             "anty",
             "auto",
             "arcy",
@@ -138,6 +143,6 @@ class WordsFilter {
     ));
     
     static boolean isSensibleWord(String word) {
-        return word.length() >= 4 && BANNED_PREFIXES.stream().noneMatch(word::startsWith);
+        return word.length() >= MIN_WORD_LENGTH && BANNED_PREFIXES.stream().noneMatch(word::startsWith);
     }
 }

@@ -17,12 +17,12 @@ import java.util.concurrent.TimeUnit;
 import static java.text.MessageFormat.format;
 import static java.util.Collections.singletonList;
 import static pl.kelog.common.Constants.HTTP_STATUS_OK;
+import static pl.kelog.common.Constants.POST_WORD_PARAM_NAME;
 
 public class HttpResultsPublisher implements ResultsPublisher {
     
-    private static final String POST_WORD_PARAM_NAME = "word";
     private static final int THREAD_POOL_SIZE = 5;
-    private static final int POOL_TERMINATION_TIMEOUT = 10;
+    private static final int POOL_TERMINATION_TIMEOUT_SECONDS = 10;
     
     private final String sinkUrl;
     private final ExecutorService executorService = Executors.newFixedThreadPool(THREAD_POOL_SIZE);
@@ -31,6 +31,10 @@ public class HttpResultsPublisher implements ResultsPublisher {
         this.sinkUrl = sinkUrl;
     }
     
+    /**
+     * Callable is used here instead of Runnable because of
+     * checked exceptions.
+     */
     @Override
     public void publishAsync(SearchResult searchResult) {
         executorService.submit((Callable<Void>) () -> {
@@ -42,8 +46,8 @@ public class HttpResultsPublisher implements ResultsPublisher {
     @Override
     public void flush() {
         try {
-            executorService.awaitTermination(POOL_TERMINATION_TIMEOUT, TimeUnit.SECONDS);
-        } catch (InterruptedException e) {
+            executorService.awaitTermination(POOL_TERMINATION_TIMEOUT_SECONDS, TimeUnit.SECONDS);
+        } catch (InterruptedException e) { // safe to ignore
             e.printStackTrace();
         }
         executorService.shutdownNow();
